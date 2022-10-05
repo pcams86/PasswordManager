@@ -6,24 +6,27 @@ import java.util.Scanner;
 
 public class PasswordManager {
 
-    private Scanner scanner = new Scanner(System.in);
-    private Map<String, String> map = new HashMap<>();
+    private final Scanner scanner;
+    private final Map<String, String> map = new HashMap<>();
+    private boolean close = false;
     PasswordManager() {
+        scanner = new Scanner(System.in);
 
         askQuestion();
 
     }
     private void askQuestion() {
-        while (true){
+        while (!close){
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             System.out.println("What would you like to do?");
-            System.out.println("(A)dd Password, (V)iew Password, (Q)uit");
+            System.out.println("(A)dd Password, (V)iew Password, (F)ull List, (Q)uit");
             char response = Character.toUpperCase(scanner.nextLine().charAt(0));
 
             switch (response) {
                 case 'A' -> addPassword();
                 case 'V' -> viewPassword();
                 case 'Q' -> quit();
+                case 'F' -> fullList();
                 default -> System.out.println("not a valid response.");
             }
 
@@ -42,14 +45,18 @@ public class PasswordManager {
     }
     private void viewPassword(){
         System.out.print("enter website: ");
-        String siteReader = scanner.nextLine();
+        String siteReader = scanner.nextLine().toLowerCase();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println(map.getOrDefault(siteReader, "No data for that website exists"));
 
+    }
+    private void fullList(){
+        System.out.println(map);
     }
     private void quit(){
         System.out.println("Have a nice day!");
         System.out.println("~~~~~~~~~~~~~~~~");
-        System.exit(0);
+        close = true;
 
     }
 }
